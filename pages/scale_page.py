@@ -42,20 +42,17 @@ class ScalePage(base_page):
     def add_bars_to_bowl(self, bowl, bars):
         for i, bar in enumerate(bars):
             cell = self.find_cell(bowl, i)
-            cell.clear()  # Clear any existing value
+            cell.clear()  
             cell.send_keys(str(bar))
 
     def click_weigh(self):
-        # XPath for the ordered list
         ol_xpath = "//div[contains(@class, 'game-info')]//ol"
-
-        # Find the ordered list (ol) element
         ol_element = self._driver.find_element(By.XPATH, ol_xpath)
 
-        # Check if the ol element is empty by inspecting its inner HTML
+        # Check if the ol is empty 
         is_first_weigh = ol_element.get_attribute("innerHTML").strip() == ""
 
-        # Click the weigh button
+        # Click weigh
         weigh_button = helper.find_element_with_wait_clickable(self._driver, By.ID, "weigh", 10)
         weigh_button.click()
 
@@ -66,7 +63,7 @@ class ScalePage(base_page):
             # If it's not the first weigh, wait for the list to update with a new entry
             initial_count = len(ol_element.find_elements(By.TAG_NAME, "li"))
             WebDriverWait(self._driver, 10).until(lambda driver: len(driver.find_elements(By.XPATH, f"{ol_xpath}/li")) > initial_count)
-        
+
     def get_result(self):
         #ID is not unique, so using xpath
         comparison_operator_xpath = "//div[@class='result']//button[@id='reset']"
@@ -91,3 +88,15 @@ class ScalePage(base_page):
         fake = helper.find_element_with_wait_clickable(self._driver,By.ID, bar_id, 10)
         helper.highlight_element(self._driver, fake)
         fake.click()
+        
+    def get_weighings(self):
+        # ol element containing the weighings
+        ol_element = self._driver.find_element(By.CSS_SELECTOR, ".game-info ol")
+        
+        # li elements within the ol
+        li_elements = ol_element.find_elements(By.TAG_NAME, "li")
+        
+        # return the text of each li 
+        weighings = [li.text for li in li_elements]
+        return weighings
+        

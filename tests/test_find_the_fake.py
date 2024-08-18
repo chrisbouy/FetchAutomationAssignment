@@ -8,7 +8,14 @@ class TestFindFakeBar:
         
         bars = list(range(9)) 
 
+        
         fake_bar = fake_finder.find_fake_bar(bars)
+        
+        weighings = fake_finder.scale_page.get_weighings()
+        print("Weighings:")
+        for weighing in weighings:
+            print(weighing)
+            
         result_message = fake_finder.verify_fake_bar(fake_bar)
 
         print(f"Fake bar found: {fake_bar}")

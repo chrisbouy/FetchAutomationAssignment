@@ -42,6 +42,7 @@ class FakeGoldBarFinder:
 
             self.scale_page.click_reset() 
         # The remaining bar is the fake one
+        #self.scale_page.get_weighings_list()
         return bars[0]  
 
     def verify_fake_bar(self, bar):
